@@ -12,7 +12,7 @@ Seçim sonuçlarının resmi açıklamalarla tutarlılığını teyit etmek amac
     
 # Gereksinimler 
 
-1. Islak imzalı tutanakların fotoğraflarının '#TR24Haziran2018' hashtag'i ile Twitter'a yüklenmesi gerekiyor.
+1. Islak imzalı tutanakların fotoğraflarının '#TR24Haziran2018' hashtag'i ile Twitter'a yüklenmesi gerekiyor. (bkz. [twitter çağrısı](https://twitter.com/ceremcem/status/1010115545465868289)
     
 # Avantajlar
 
