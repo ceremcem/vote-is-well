@@ -1,12 +1,18 @@
 # Değerlendirme Algoritması 
 
-1. Twitter'a '#TR24Haziran2018' hashtag'i ile yüklenmiş fotoğraflar [Twitter servisi](./twitter-service) aracılığıyla otomatik olarak okunacak. 
+Seçim sonuçlarının resmi açıklamalarla tutarlılığını teyit etmek amacıyla hazırlanan servistir. Değerlendirme algoritması aşağıdaki gibidir: 
+
+1. Twitter'a yüklenmiş sandık sonuç tutanaklarının fotoğrafları [Twitter servisi](./twitter-service) aracılığıyla otomatik olarak okunacak. 
 2. Tweet'in içinde ya da yorumunda yazan sandık sonuçları toplanarak seçim sonucu teyit edilecek. 
 3. Art niyetli kişi ya da yazılımlar tarafından yanlış şekilde yazılan seçim sonuçlarını elemek için:
     1. "Beğen" butonu kullanılacak. Daha çok beğeni alan seçim sonucu ifadesi _o an için_ doğru kabul edilecek.
     2. Kara listeler yapılacak (kara listedeki kullanıcıların beğenileri dikkate alınmayacak)
     3. Beyaz listeler yapılacak (beyaz listedeki kullanıcıların beğenileri doğrudan geçerli sayılacak)
     4. Otomatik kara liste mekanizması çalışacak (beyaz listedekilerin onayladığının dışındakileri onaylayanlar otomatik olarak kara listeye alınacak)
+    
+# Gereksinimler 
+
+1. Islak imzalı tutanakların fotoğraflarının '#TR24Haziran2018' hashtag'i ile Twitter'a yüklenmesi gerekiyor.
     
 # Avantajlar
 
