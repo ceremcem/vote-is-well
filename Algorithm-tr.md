@@ -1,8 +1,8 @@
 # Tanım 
 
-Seçim sonuçlarının resmi açıklamalarla tutarlılığını teyit etmek amacıyla hazırlanan servistir. Değerlendirme algoritması aşağıdaki gibidir: 
+Seçim sonuçlarının resmi açıklamalarla tutarlılığını teyit etmek amacıyla hazırlanan servistir. 
 
-# Değerlendirme Algoritması 
+## Değerlendirme Algoritması 
 
 1. Twitter'a yüklenmiş sandık sonuç tutanaklarının fotoğrafları [Twitter servisi](./twitter-service) aracılığıyla otomatik olarak okunacak. 
 2. Tweet'in içinde ya da yorumunda yazan sandık sonuçları toplanarak seçim sonucu teyit edilecek. 
