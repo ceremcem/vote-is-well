@@ -1,5 +1,5 @@
 require! 'twitter': Twitter
-require! 'credentials': {c}
+require! './credentials': {c}
 
 client = new Twitter do
   consumer_key: c.consumer_key
@@ -12,6 +12,8 @@ console.log "Got #{tweets.statuses.length} tweets."
 for let tweets.statuses
     console.log "--------------------------------"
     console.log "Orig tweet is: ", ..text
+
+    # FIXME: since_id is not enough for getting replies for a particular tweet 
     error, tweets <~ client.get 'search/tweets.json', {q: "to:#{..user.screen_name}", since_id: ..id}
     for reply in tweets.statuses
         console.log reply.text, "(fav: #{reply.favorite_count})"
