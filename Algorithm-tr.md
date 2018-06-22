@@ -15,6 +15,12 @@ Seçim sonuçlarının resmi açıklamalarla tutarlılığını teyit etmek amac
 # Gereksinimler 
 
 1. Islak imzalı tutanakların fotoğraflarının '#TR24Haziran2018' hashtag'i ile Twitter'a yüklenmesi gerekiyor. (bkz. [twitter çağrısı](https://twitter.com/ceremcem/status/1010115545465868289)
+
+2. Tutanağın içindeki sayısal değerler, tweetin içine ya da yorum olarak şu formatta yazılmalı: 
+
+        #TR24Haziran2018 sandık: 1234, aaa partisi: 45, bbb partisi 75, geçersiz: 3, toplam: 123
+    
+
     
 # Avantajlar
 
