@@ -1,10 +1,26 @@
 # Distributed Election Verification and Organization Platform
 
-This platfrom will help making fair elections. 
+This platfrom will help making fair elections by providing a trusted review mechanism. 
+
+# Install
+
+1. Install [`NodeJs`](https://nodejs.org)
+
+2. Install global `npm` dependencies (**as root/admin**):
+
+        npm install -g gulp livescript@1.4.0
 
 
-# Roadmap 
+3. Download the project template, install project dependencies:
 
-1. Determine the design criterias (in [issue page](https://github.com/ceremcem/vote-is-well/issues))
-2. Use [scada.js](https://github.com/aktos-io/scada.js) to build a distributed realtime failsafe UI and backend
-3. Test, test and test. 
+       git clone --recursive https://github.com/aktos-io/scadajs-template myproject
+       cd myproject
+       ./scada.js/install-modules.sh
+
+# Run
+
+If you are on Linux, following command will start everything needed for development:
+
+       ./dev.service
+
+In Windows, manually execute every `run-in-tmux` line in a separate command line.
