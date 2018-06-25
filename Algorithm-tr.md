@@ -33,4 +33,4 @@ kendi makinalarında çalıştırabilirler, ister kendileri yeniden bir yazılı
 
 # Yol Haritası 
 
-* Sandık tutanakları görüntü işleme ile taranarak sonuçlar sisteme otomatik olarak girilecek. 
+* Beyaz liste/kara liste yerine sandık tutanakları görüntü işleme ile taranarak sonuçlar sisteme otomatik olarak girilecek. 
