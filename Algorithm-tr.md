@@ -30,3 +30,7 @@ kendi makinalarında çalıştırabilirler, ister kendileri yeniden bir yazılı
 # Dezavantajlar
 
 Şimdilik bir dezavantaj görünmüyor. 
+
+# Yol Haritası 
+
+* Sandık tutanakları görüntü işleme ile taranarak sonuçlar sisteme otomatik olarak girilecek. 
