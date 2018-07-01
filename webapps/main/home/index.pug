@@ -1,37 +1,94 @@
-.ui.huge.message.page.grid
-    h1.ui.huge.header Açık Teyit
-    
-.ui.segments 
-    .ui.segment
-        h2.ui.header Tweet oluştur 
-        .ui.form
-            .fields 
-                .field 
-                    label İl 
-                    dropdown(
-                        data="{{cities}}"
-                        selected-key="{{record.city}}"
-                        key="city"
-                        name="city"
-                        on-select="selectCity")                    
-                .field 
-                    label İlçe 
-                    dropdown(
-                        data="{{districts}}"
-                        selected-key="{{record.district}}"
-                        )
-                .field 
-                    label Sandık No 
-                    input(value="{{record.ballot}}" type="number")
-                        
-            .fields 
-                .field 
-                    label &nbsp;
-                    ack-button(on-click="createTweet") Tweet Oluştur
+.ui.container
+    h1.ui.huge.header(style="padding-top: 2em; padding-bottom: 2em;") 
+        a(href="https://twitter.com/acikteyit" newtab)
+            .ui.huge.green.label @acikteyit
+                
 
-    .ui.segment 
-        h2.ui.block.header Tweet 
-        .ui.form 
-            textarea(value="{{tweetText}}") 
-    
+    anchor bilgi
+    h3.ui.header.top.attached.block: a(href="#bilgi") Bilgi
+    .ui.message.bottom.attached
+        anchor yeni-tutanak
+        .ui.accordion(as-accordion) 
+            .title: icon.dropdown Yeni tutanak yüklerken
+            .content
+                ol
+                    li Tutanak fotoğraflarını yeni oluşturduğunuz tweet'e yükleyin.
+                    li Tutanak fotoğrafından okuduğunuz bilgileri buradaki ilgili alanlara doldurun.
+                    li Tweet metnini oluşturun.
+                    li Metni kopyalayıp yorum olarak ilgili Tweet'e yapıştırın
+
+        anchor mevcut-tutanak
+        .ui.accordion(as-accordion) 
+            .title: icon.dropdown Mevcut tutanağın dökümünü yaparken
+            .content
+                ol
+                    li.
+                        #[a(href="https://twitter.com/hashtag/TR24Haziran2018?src=hash" newtab) #TR24Haziran2018] 
+                        hashtag'i ile tutanakları listeleyin.
+                    li Tutanağın fotoğrafını açın
+                    li Fotoğraftan okuduğunuz bilgileri buradaki ilgili alanlara doldurun.
+                    li Tweet metnini oluşturun.
+                    li Metni kopyalayıp yorum olarak ilgili Tweet'e yapıştırın
                     
+        .ui.accordion(as-accordion) 
+            .title: icon.dropdown Yazılımla ilgili problem yaşanırsa
+            .content.
+                #[a(href="https://github.com/ceremcem/vote-is-well/issues" newtab) Github] 
+                üzerinden hata ve talepleri iletiniz. (Türkçe yazabilirsiniz.)
+
+        anchor amac
+        .ui.accordion(as-accordion) 
+            .title: icon.dropdown Amaç
+            .content
+                p.
+                    24 Haziran 2018'deki seçimlerde partilerin ve sivil oluşumların tutanakları 
+                    toplayacak yazılımları çalıştıramadıkları, doğrudan YSK'nın sonuçlarını 
+                    kabul ettikleri ve kamuoyuna yeterli bir teknik açıklama yapmadıkları 
+                    anlaşılmıştır.
+                        
+                p.
+                    Bu aşamada sandık sonuçlarının teyit problemini çözmek amacıyla işbu 
+                    yazılımın hazırlanması gerekmiştir. 
+        
+    .ui.segments                         
+        .ui.segment
+            anchor tweet-olustur
+            h2.ui.header: a(href="#tweet-olustur") Tutanak Metni Oluştur 
+            .ui.form
+                .fields 
+                    .field 
+                        label İl 
+                        dropdown(
+                            data="{{cities}}"
+                            selected-key="{{record.city}}"
+                            key="city"
+                            name="city"
+                            on-select="selectCity")                    
+                    .field 
+                        label İlçe 
+                        dropdown(
+                            data="{{districts}}"
+                            selected-key="{{record.district}}"
+                            )
+                    .field 
+                        label Sandık No 
+                        input(value="{{record.ballot}}" type="number")
+                            
+                .fields 
+                    .field 
+                        label &nbsp;
+                        ack-button.green(on-click="createTweet") Tweet Metni Oluştur
+
+            modal(title="Tweet Metni" basedon="{{mymodal1}}")
+                .ui.p Aşağıdaki Tweet'i ilgili tutanağa yorum olarak yapıştırın:
+                .ui.form 
+                    .fields 
+                        textarea(value="{{tweetText}}" rows="2" readonly) 
+                    .fields 
+                        btn.icon.blue(
+                            on-click="copyTweet" 
+                            tooltip="Tweet'i panoya kopyala")
+                            icon.copy Kopyala
+
+
+div(style="height: 300px")
