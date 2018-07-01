@@ -1,6 +1,6 @@
 require! 'twitter': Twitter
-require! './credentials': {c} # see https://chimpgroup.com/knowledgebase/twitter-api-keys/
-require! 'dcs': {SignalBranch, sleep}
+require! '../../config': {c} # see https://chimpgroup.com/knowledgebase/twitter-api-keys/
+require! 'dcs': {SignalBranch}
 
 client = new Twitter do
   consumer_key: c.consumer_key
@@ -39,14 +39,19 @@ dump-tweet = (tweet, level=0) ->
     for tweet.replies or []
         dump-tweet .., (level+1)
 
-error, tweets <~ client.get 'search/tweets.json', {q: '#ccatesthashtag'}
-console.log "Got #{tweets.statuses.length} tweets."
-for let orig in tweets.statuses
-    err, tweets <~ get-replies orig
-    console.log "--------------------------------"
-    console.log "Orig tweet is: "
-    dump-tweet orig
-    console.log "...and its replies: "
-    for tweets
-        dump-tweet .., 1
-    console.log "================================"
+dump-from-hashtag = (hashtag) ->
+    error, tweets <~ client.get 'search/tweets.json', {q: '#' + hashtag}
+    console.log "Got #{tweets.statuses.length} tweets."
+    for let orig in tweets.statuses
+        err, tweets <~ get-replies orig
+        console.log "--------------------------------"
+        console.log "Orig tweet is: "
+        dump-tweet orig
+        console.log "...and its replies: "
+        for tweets
+            dump-tweet .., 1
+        console.log "================================"
+
+#dump-from-hashtag \ccatesthashtag
+error, tweets <~ client.get 'favorites/list.json'
+console.log tweets

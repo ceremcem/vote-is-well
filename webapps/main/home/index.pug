@@ -1,0 +1,37 @@
+.ui.huge.message.page.grid
+    h1.ui.huge.header Açık Teyit
+    
+.ui.segments 
+    .ui.segment
+        h2.ui.header Tweet oluştur 
+        .ui.form
+            .fields 
+                .field 
+                    label İl 
+                    dropdown(
+                        data="{{cities}}"
+                        selected-key="{{record.city}}"
+                        key="city"
+                        name="city"
+                        on-select="selectCity")                    
+                .field 
+                    label İlçe 
+                    dropdown(
+                        data="{{districts}}"
+                        selected-key="{{record.district}}"
+                        )
+                .field 
+                    label Sandık No 
+                    input(value="{{record.ballot}}" type="number")
+                        
+            .fields 
+                .field 
+                    label &nbsp;
+                    ack-button(on-click="createTweet") Tweet Oluştur
+
+    .ui.segment 
+        h2.ui.block.header Tweet 
+        .ui.form 
+            textarea(value="{{tweetText}}") 
+    
+                    
