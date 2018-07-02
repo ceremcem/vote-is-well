@@ -13,12 +13,30 @@
                 +apply('renderMarkup .content')
 
 
-h1.ui.header.top.attached.block.big Projenin Hikayesi
-.ui.segment.bottom.attached(style="background-color: teal")
-    .timeline 
-        +each('_.reverse(history)')
-            +apply('timeline-item')
+h1.ui.header.top.attached.block.big Sık Sorulan Sorular
+.ui.segment.bottom.attached
+    .ui.accordion(as-accordion)
+        .title: icon.dropdown Projenin Hikayesi 
+        .content(style="background-color: teal")
+            .timeline 
+                +each('_.reverse(history)')
+                    +apply('timeline-item')
 
+    .ui.accordion(as-accordion)
+        .title: icon.dropdown Çalışma mantığı
+        .content 
+            ul
+                li Dağınık ve açık veritabanı olarak Twitter'ın kendisi kullanılmaktadır.
+                li Tutanaklar belli bir hashtag ile Twitter'a yüklenecek, 
+                li Tutanak dökümleri yorum olarak tweet'lerin altına yorum yapılacak, 
+                li Yüklenmiş tutanaklar işbu servis aracılığıyla otomatik olarak işlenecektir. 
+                    
+            p Ayrıntılar için (bkz. #[a(href="https://github.com/ceremcem/vote-is-well/blob/dev/doc/Algorithm-tr.md") Algoritma])
+
+    .ui.accordion(as-accordion)
+        .title: icon.dropdown Kim tarafından geliştiriliyor?
+        .content 
+            | (bkz. #[a(newtab href="https://github.com/ceremcem/vote-is-well/graphs/contributors") Github/geliştiriciler])
 
 .ui.message.orange
     h3.ui.header Yapılacaklar 
