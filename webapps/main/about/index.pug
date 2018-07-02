@@ -1,0 +1,32 @@
++partial('renderMarkup').
+    {{#if typeof . === 'string'}}
+        {{> { template: . } }}
+    {{else}}
+        {{{ . }}}
+    {{/if}}
+    
++partial('timeline-item')
+    .container(class="{{#if @index%2 === 0}}left{{else}}right{{/if}}") 
+        .content
+            h2 {{.date}} 
+            p
+                +apply('renderMarkup .content')
+
+
+h1.ui.header.top.attached.block.big Projenin Hikayesi
+.ui.segment.bottom.attached(style="background-color: teal")
+    .timeline 
+        +each('_.reverse(history)')
+            +apply('timeline-item')
+
+
+.ui.message.orange
+    h3.ui.header Yapılacaklar 
+    ol
+        li.
+            Twitter servisi yeni bir tutanak yüklenir yüklenmez "Görüldü, uygundur" 
+            şeklinde bir mesaj bıraksın.
+        li.
+            İşlenmesi gereken tweetler işbu sayfa aracılığıyla listelensin. 
+        li.
+            Twitter'a tutanak yükleme hızının grafiği bu sayfada gösterilsin.

@@ -1,0 +1,26 @@
+.ui.vertical.inverted.large.sidebar.menu.left
+    .item 
+    .menu(style="font-size: 1.2em;")
+        +each('menu')
+            a.item(
+                href!='{{.url}}'
+                class="{{#if @shared.router.scene === .url }}active{{/if}}"
+                )
+                b {{ .title }}
+                +iff('.icon')
+                    i.icon(class="{{.icon}}")
+                +else
+                    i.code.icon
+                +endif
+
+            +if('.submenu')
+                .item
+                    .menu
+                        +each('.submenu')
+                            a.item(
+                                href!='{{menu[@index].url}}{{.url}}'
+                                class="{{#if @shared.router.scene === .url }}active{{/if}}"
+                                )
+                                | {{ .title }}
+                                +if('.icon')
+                                    i.icon(class="{{.icon}}")
