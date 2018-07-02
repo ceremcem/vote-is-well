@@ -1,5 +1,5 @@
 anchor bilgi
-h3.ui.header.top.attached.block: a(href="#bilgi") Bilgi
+h3.ui.header.top.attached.block: a(href="#bilgi") Yönerge/yardım
 .ui.message.bottom.attached
     anchor yeni-tutanak
     .ui.accordion(as-accordion) 
@@ -54,10 +54,11 @@ h3.ui.header.top.attached.block: a(href="#bilgi") Bilgi
                     label Sandık No 
                     input(value="{{record.ballot}}" type="number")
                         
-            .fields 
-                .field 
-                    label &nbsp;
-                    ack-button.green(on-click="createTweet") Tweet Metni Oluştur
+        .ui.message.blue(style="margin: 2em").
+            Şimdilik diğer dökümlere gerek yoktur, 10 bin tutanaktan fazla toplandığında
+            içlerini doldurmaya başlayacağız.
+                        
+        ack-button.green(on-click="createTweet") Tweet Metni Oluştur
 
         modal(title="Tweet Metni" basedon="{{mymodal1}}")
             .ui.p Aşağıdaki Tweet'i ilgili tutanağa yorum olarak yapıştırın:
