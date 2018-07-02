@@ -71,7 +71,6 @@ Ractive.components['about'] = Ractive.extend do
               content: '''
                 Tüm müşahitlere, ellerindeki tutanakları Twitter'a yüklemeleri konusunda
                 çağrı yapıldı. <a newtab href="https://twitter.com/ceremcem/status/1011115529510277120">*</a>
-                diye soruldu, ancak hiçbirinden cevap alınamadı.
                 '''
 
             * date: '25-28 Haziran 2018'
@@ -84,6 +83,7 @@ Ractive.components['about'] = Ractive.extend do
                 <a newtab href="https://twitter.com/guventurks/status/1011258049300979712">*</a>
                 <a newtab href="https://twitter.com/ceremcem/status/1011720046920519682">*</a>
                 <a newtab href="https://twitter.com/ceremcem/status/1011312033382453248">*</a>
+                <a newtab href="https://twitter.com/mirelle11/status/1011912737486704651">*</a>
                 '''
 
             * date: '1 Temmuz 2018'
