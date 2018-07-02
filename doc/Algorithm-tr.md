@@ -14,7 +14,7 @@ Seçim sonuçlarının resmi açıklamalarla tutarlılığını teyit etmek amac
     
 # Gereksinimler 
 
-1. Islak imzalı tutanakların fotoğraflarının `#TR24Haziran2018` hashtag'i ile Twitter'a yüklenmesi gerekiyor. (bkz. [twitter çağrısı](https://twitter.com/ceremcem/status/1010115545465868289)
+1. Islak imzalı tutanakların fotoğraflarının [`#TR24Haziran2018`](https://twitter.com/hashtag/TR24Haziran2018?src=hash) hashtag'i ile Twitter'a yüklenmesi gerekiyor. (bkz. [twitter çağrısı](https://twitter.com/ceremcem/status/1010115545465868289)
 
 2. Tutanağın içindeki sayısal değerler, tweetin içine ya da yorum olarak şu formatta yazılmalı: 
 
@@ -30,3 +30,7 @@ kendi makinalarında çalıştırabilirler, ister kendileri yeniden bir yazılı
 # Dezavantajlar
 
 Şimdilik bir dezavantaj görünmüyor. 
+
+# Yol Haritası 
+
+* Beyaz liste/kara liste yerine sandık tutanakları görüntü işleme ile taranarak sonuçlar sisteme otomatik olarak girilecek. 
