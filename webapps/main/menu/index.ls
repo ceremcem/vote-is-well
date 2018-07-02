@@ -17,9 +17,6 @@ Ractive.components['side-menu'] = Ractive.extend do
                 #  url: '#/issues'
                 x = []
                     ..push do
-                        title: 'Ana Sayfa'
-                        url: '#/'
-                    ..push do
                         title: 'Araçlar'
                         url: '#/tools'
                     ..push do

@@ -6,6 +6,12 @@ require! 'dcs/src/auth-helpers': {hash-passwd}
 hardcoded-users =
     'public':
         passwd-hash: hash-passwd "public"
+        routes:
+            \@twitter-service.total
+            \@twitter-service.update
+
+    'twitter-service':
+        passwd-hash: hash-passwd "YnBXSAD5Xqhbzra3Yw4uR5CxJfY8g8Hj"
 
 new DcsTcpClient port: dcs-port
     .login do
