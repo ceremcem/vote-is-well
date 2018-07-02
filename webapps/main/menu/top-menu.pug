@@ -1,0 +1,28 @@
+.ui.fixed.inverted.main.menu
+    a.launch.icon.item(onclick="$('.ui.sidebar').sidebar('toggle')")
+        i.content.icon 
+
+    .right.menu
+        //-
+            .vertically.fitted.borderless.item         
+                img.ui.tiny(src="aktos.io-brand-4.svg")
+
+
+        //- login is currently unused
+            .item
+                +iff('@global.session.token')
+                    //- seems logged in 
+                    .vertically.fitted.borderless.item 
+                        span(as-inline-popup) 
+                            icon.user {{@global.session.user}}
+                        .ui.fluid.popup.top.transition.hidden
+                            p Permissions:
+                            ul
+                                +each('@global.session.permissions as perm')
+                                    li {{perm}}
+                    logout-button.red.circular.icon
+                        icon.sign.out
+                +else     
+                    btn.labeled.icon.green(href='#/login') Sign in #[icon.sign.in]
+                +endif 
+div(style="margin-bottom: 80px")

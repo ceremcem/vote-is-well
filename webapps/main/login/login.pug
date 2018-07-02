@@ -1,0 +1,40 @@
+div(style="margin-bottom: 10%")
+
++showif('! @global.session.token')
+    .ui.four.column.stackable.center.aligned.grid 
+        .column 
+            form.ui.form 
+                .field
+                    .ui.left.icon.input 
+                        input.username(
+                            value="{{user}}" 
+                            placeholder="username"
+                            on-enter="focusPassword")
+                        i.user.icon 
+                .field 
+                    .ui.left.icon.input
+                        input.password(
+                            value="{{password}}" 
+                            placeholder="password"
+                            type="password"
+                            on-enter="clickLogin")
+                        i.lock.icon 
+                
+                login-button.fluid.green(
+                    user="{{user}}"
+                    password="{{password}}"
+                    wid="login-button"
+                    on-success="success") Login 
+                    
++showif('@global.session.token')
+    .ui.ten.column.stackable.center.aligned.grid 
+        .six.wide.column 
+            h1.ui.header: icon.green.check Logged in 
+
+            btn.right.labeled.icon.teal(
+                href='#/{{@global.session.openingScene}}'
+                wid="go-to-opening-scene")
+                icon.toggle.right Opening scene
+
+    
+//-| {{JSON.stringify(@global.session)}}

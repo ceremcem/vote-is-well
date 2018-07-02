@@ -1,37 +1,19 @@
-.ui.huge.message.page.grid
-    h1.ui.huge.header Açık Teyit
-    
-.ui.segments 
-    .ui.segment
-        h2.ui.header Tweet oluştur 
-        .ui.form
-            .fields 
-                .field 
-                    label İl 
-                    dropdown(
-                        data="{{cities}}"
-                        selected-key="{{record.city}}"
-                        key="city"
-                        name="city"
-                        on-select="selectCity")                    
-                .field 
-                    label İlçe 
-                    dropdown(
-                        data="{{districts}}"
-                        selected-key="{{record.district}}"
-                        )
-                .field 
-                    label Sandık No 
-                    input(value="{{record.ballot}}" type="number")
-                        
-            .fields 
-                .field 
-                    label &nbsp;
-                    ack-button(on-click="createTweet") Tweet Oluştur
+.ui.message.big(style="padding: 4em")
+    a(href="https://twitter.com/acikteyit" newtab)
+        img.ui.centered.small.image(src="https://user-images.githubusercontent.com/6639874/42140145-497092a8-7da3-11e8-8028-8ec89adc6034.png")
+        
+    h2.ui.horizontal.divider.header(style="margin: 2em") Nedir
 
-    .ui.segment 
-        h2.ui.block.header Tweet 
-        .ui.form 
-            textarea(value="{{tweetText}}") 
-    
-                    
+    p.
+        24 Haziran 2018'deki seçimlerde partilerin ve sivil oluşumların tutanakları 
+        toplayacak yazılımları çalıştıramadıkları, doğrudan YSK'nın sonuçlarını 
+        kabul ettikleri ve kamuoyuna herhangi bir teknik açıklama yapmadıkları
+        anlaşılmıştır.
+            
+    p.
+        Bu aşamada sandık sonuçlarının teyit problemini çözmek amacıyla işbu 
+        yazılımın hazırlanması gerekmiştir. 
+                
+    p
+        btn.large.icon.purple(href="#/tools#tweet-olustur"): icon.play Başlayın
+        

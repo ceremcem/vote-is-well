@@ -1,12 +1,13 @@
 require! 'twitter': Twitter
-require! '../../config': {c} # see https://chimpgroup.com/knowledgebase/twitter-api-keys/
-require! 'dcs': {SignalBranch}
+require! '../../config': {c, dcs-port}
+require! 'dcs': {SignalBranch, Actor, DcsTcpClient}
 
 client = new Twitter do
-  consumer_key: c.consumer_key
-  consumer_secret: c.consumer_secret
-  access_token_key: c.access_token_key
-  access_token_secret: c.access_token_secret
+    # see https://chimpgroup.com/knowledgebase/twitter-api-keys/
+    consumer_key: c.consumer_key
+    consumer_secret: c.consumer_secret
+    access_token_key: c.access_token_key
+    access_token_secret: c.access_token_secret
 
 
 get-replies = (tweet, callback) ->
@@ -52,6 +53,27 @@ dump-from-hashtag = (hashtag) ->
             dump-tweet .., 1
         console.log "================================"
 
-#dump-from-hashtag \ccatesthashtag
-error, tweets <~ client.get 'favorites/list.json'
-console.log tweets
+
+new DcsTcpClient port: dcs-port
+    .login do
+        user: "twitter-service"
+        password: 'YnBXSAD5Xqhbzra3Yw4uR5CxJfY8g8Hj'
+
+
+hashtag = 'TR24Haziran2018'
+
+new class TwitterActor extends Actor
+    ->
+        super \twitter
+        @log.info "Initialized TwitterActor"
+        @on-topic \@twitter-service.update, (msg) ~>
+            @log.log "got update: ", msg.data
+            @send-response msg, {+part, timeout: 20_000ms, +ack}, null
+
+            err, tweets <~ client.get 'search/tweets.json', {q: '#' + hashtag}
+            @send-response msg, tweets.statuses.length
+
+        @on-topic \@twitter-service.total, (msg) ~>
+            @log.log "got message: ", msg.data
+
+#dump-from-hashtag \TR24Haziran2018

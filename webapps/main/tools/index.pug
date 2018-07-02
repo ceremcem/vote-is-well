@@ -1,0 +1,50 @@
+//-
+    h3.ui.header Anlık Durum
+
+    ui-progress.green(min="0" max="100" value="{{twitter.total}}")
+        .label {{value}}/{{max}} Tutanak 
+    
+include ./help.pug
+.ui.segments                         
+    .ui.segment
+        anchor tweet-olustur
+        h2.ui.header: a(href="#tweet-olustur") Tutanak Metni Oluştur 
+        .ui.form
+            .fields 
+                .field 
+                    label İl 
+                    dropdown(
+                        data="{{cities}}"
+                        selected-key="{{record.city}}"
+                        key="city"
+                        name="city"
+                        on-select="selectCity")                    
+                .field 
+                    label İlçe 
+                    dropdown(
+                        data="{{districts}}"
+                        selected-key="{{record.district}}"
+                        )
+                .field 
+                    label Sandık No 
+                    input(value="{{record.ballot}}" type="number")
+                        
+        .ui.message.blue(style="margin: 2em").
+            Şimdilik diğer dökümlere gerek yoktur, 10 bin tutanaktan fazla toplandığında
+            içlerini doldurmaya başlayacağız.
+                        
+        ack-button.green(on-click="createTweet") Tweet Metni Oluştur
+
+        modal(title="Tweet Metni" basedon="{{mymodal1}}")
+            .ui.p Aşağıdaki Tweet'i ilgili tutanağa yorum olarak yapıştırın:
+            .ui.form 
+                .fields 
+                    textarea(value="{{tweetText}}" rows="2" readonly) 
+                .fields 
+                    btn.icon.blue(
+                        on-click="copyTweet" 
+                        tooltip="Tweet'i panoya kopyala")
+                        icon.copy Kopyala
+
+
+div(style="height: 300px")
