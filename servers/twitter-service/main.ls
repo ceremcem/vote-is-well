@@ -1,6 +1,9 @@
 require! 'twitter': Twitter
 require! '../../config': {c, dcs-port}
-require! 'dcs': {SignalBranch, Actor, DcsTcpClient}
+require! 'dcs': {
+    SignalBranch, Actor, DcsTcpClient,
+    IoProxyHandler, DriverAbstract
+}
 
 client = new Twitter do
     # see https://chimpgroup.com/knowledgebase/twitter-api-keys/
@@ -9,6 +12,7 @@ client = new Twitter do
     access_token_key: c.access_token_key
     access_token_secret: c.access_token_secret
 
+hashtag = 'TR24Haziran2018'
 
 get-replies = (tweet, callback) ->
     '''
@@ -59,21 +63,37 @@ new DcsTcpClient port: dcs-port
         user: "twitter-service"
         password: 'YnBXSAD5Xqhbzra3Yw4uR5CxJfY8g8Hj'
 
-
-hashtag = 'TR24Haziran2018'
-
-new class TwitterActor extends Actor
+class TwitterDriver extends DriverAbstract
     ->
-        super \twitter
-        @log.info "Initialized TwitterActor"
-        @on-topic \@twitter-service.update, (msg) ~>
-            @log.log "got update: ", msg.data
-            @send-response msg, {+part, timeout: 20_000ms, +ack}, null
+        super!
+        @started!
+        
+    write: (handle, value, respond) ->
+        # we got a write request to the target
+        console.log "we got ", value, "to write as ", handle.route
+        err = no
+        if handle.readonly
+            err = yes
+            console.log "...not writing because handle is readonly."
+        respond err
 
+    read: (handle, respond) ->
+        # we are requested to read the handle value from the target
+        if handle.name is \ballot-totals
+            console.log "getting ballot totals"
             err, tweets <~ client.get 'search/tweets.json', {q: '#' + hashtag}
-            @send-response msg, tweets.statuses.length
+            respond err, tweets?.statuses?.length
+        else
+            console.log "we are requested to read", handle
+            respond err="unknown handle"
 
-        @on-topic \@twitter-service.total, (msg) ~>
-            @log.log "got message: ", msg.data
+# Handle can be in any format that its driver is able to understand.
+twitter-driver = new TwitterDriver
+handle =
+    name: 'ballot-totals'
+    readonly: yes
+    route: "@twitter-service.total2"
+
+new IoProxyHandler handle, handle.route, twitter-driver
 
 #dump-from-hashtag \TR24Haziran2018

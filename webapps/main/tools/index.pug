@@ -1,8 +1,11 @@
 //-
-    h3.ui.header Anlık Durum
+h3.ui.header Anlık Durum
 
-    ui-progress.green(min="0" max="100" value="{{twitter.total}}")
-        .label {{value}}/{{max}} Tutanak 
+sync(route="@twitter-service.total2" value="{{twitter.total2}}")
+ui-progress.green(min="0" max="100" value="{{twitter.total2}}")
+    .label {{value}}/{{max}} Tutanak 
+    
+input(value="{{twitter.total2}}")
     
 include ./help.pug
 .ui.segments                         

@@ -7,8 +7,7 @@ hardcoded-users =
     'public':
         passwd-hash: hash-passwd "public"
         routes:
-            \@twitter-service.total
-            \@twitter-service.update
+            \@twitter-service.total2.**
 
     'twitter-service':
         passwd-hash: hash-passwd "YnBXSAD5Xqhbzra3Yw4uR5CxJfY8g8Hj"

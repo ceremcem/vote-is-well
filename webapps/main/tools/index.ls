@@ -1,20 +1,10 @@
 nested-cities = require 'db/turkey-cities-json/nested'
 require! 'aea': {copy-to-clipboard}
-require! 'actors': {RactiveActor}
 
 Ractive.components['tools'] = Ractive.extend do
     template: RACTIVE_PREPARSE('index.pug')
     onrender: ->
         @set \cities, nested-cities
-
-        actor = new RactiveActor this
-            ..on-topic "@twitter-service.total", (msg) ~>
-                debugger
-
-            ..on-every-login ~>
-                err, res <~ actor.send-request {to: '@twitter-service.update'}, null
-                console.log "response from twitter service:", res.data
-                @set \twitter.total, res.data
 
         @on do
             selectCity: (ctx, item, proceed) ->
