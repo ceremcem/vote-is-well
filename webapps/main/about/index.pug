@@ -16,30 +16,48 @@
 h1.ui.header.top.attached.block.big Sık Sorulan Sorular
 .ui.segment.bottom.attached
     .ui.accordion(as-accordion)
+        anchor design
+        .title: icon.dropdown Tasarım kriterleri 
+        .content
+            p Sistemin tasarımında dikkate alınan hedefler şunlardır: 
+            
+            ol
+                li Açık kaynaklı olmalı, herhangi bir şüpheye mahal vermemelidir. (bkz. #[a(href="https://github.com/ceremcem/vote-is-well") Kaynak Kodlar])
+                li Veritabanı, tüm katılımcılarla anlık olarak paylaşılmalıdır.
+                li Sistem erişilebilir olmalı, mümkün olduğunca fazla çeşit cihazla ulaşılabilmelidir.
+                li.
+                    Sağlam olmalıdır: Seçim gecesi milyonlarca kişi neredeyse aynı anda sisteme giriş yapmak 
+                    istediğinde sistem çökmemelidir.
+                li Sistemin bir hata takip mekanizması olmalıdır (bkz. #[a(href="https://github.com/ceremcem/vote-is-well/issues"): icon.github Github])
+
+    .ui.accordion(as-accordion)
+        anchor howto
+        .title: icon.dropdown Çalışma Şekli
+        .content 
+            ul
+                li Dağınık ve açık veritabanı olarak Twitter'ın kendisi kullanılmaktadır.
+                li Tutanaklar belli bir hashtag ile Twitter'a yüklenecektir.
+                li Tutanak dökümleri kişiler tarafından yorum olarak tweet'lerin altına yazılacaktır. 
+                li Yüklenmiş tutanaklar işbu servis aracılığıyla otomatik olarak işlenecektir. 
+                    
+            p Ayrıntılar için (bkz. #[a(href="https://github.com/ceremcem/vote-is-well/blob/master/doc/Algorithm-tr.md") Algoritma])
+
+    .ui.accordion(as-accordion)
+        anchor history
         .title: icon.dropdown Projenin Hikayesi 
-        .content(style="background-color: teal")
+        .content(style="background-color: teal; border-radius: 10px")
             .timeline 
                 +each('_.reverse(history)')
                     +apply('timeline-item')
 
-    anchor howto
     .ui.accordion(as-accordion)
-        .title: icon.dropdown Çalışma mantığı
-        .content 
-            ul
-                li Dağınık ve açık veritabanı olarak Twitter'ın kendisi kullanılmaktadır.
-                li Tutanaklar belli bir hashtag ile Twitter'a yüklenecek, 
-                li Tutanak dökümleri yorum olarak tweet'lerin altına yorum yapılacak, 
-                li Yüklenmiş tutanaklar işbu servis aracılığıyla otomatik olarak işlenecektir. 
-                    
-            p Ayrıntılar için (bkz. #[a(href="https://github.com/ceremcem/vote-is-well/blob/dev/doc/Algorithm-tr.md") Algoritma])
-
-    .ui.accordion(as-accordion)
+        anchor development
         .title: icon.dropdown Kim tarafından geliştiriliyor?
         .content 
-            | (bkz. #[a(newtab href="https://github.com/ceremcem/vote-is-well/graphs/contributors") Github/geliştiriciler])
+            p (bkz. #[a(href="https://github.com/ceremcem/vote-is-well/graphs/contributors"): icon.github geliştiriciler])
 
 .ui.message.orange
+    anchor todo
     h3.ui.header Yapılacaklar 
     ol
         li.
@@ -49,3 +67,5 @@ h1.ui.header.top.attached.block.big Sık Sorulan Sorular
             İşlenmesi gereken tweetler işbu sayfa aracılığıyla listelensin. 
         li.
             Twitter'a tutanak yükleme hızının grafiği bu sayfada gösterilsin.
+
+.spacer
