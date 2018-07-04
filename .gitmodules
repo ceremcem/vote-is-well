@@ -1,9 +1,6 @@
 [submodule "scada.js"]
 	path = scada.js
 	url = https://github.com/aktos-io/scada.js
-[submodule "db"]
-	path = db/turkey-cities-json
-	url = https://github.com/ceremcem/turkey-cities-json
 [submodule "db/turkey-cities-json"]
 	path = db/turkey-cities-json
 	url = https://github.com/ceremcem/turkey-cities-json
