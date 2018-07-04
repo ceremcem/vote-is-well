@@ -1,11 +1,12 @@
-require! 'twitter': Twitter
 require! '../../config': {c, dcs-port}
 require! 'dcs': {
-    SignalBranch, Actor, DcsTcpClient,
-    IoProxyHandler, DriverAbstract
+    sleep, Actor, DcsTcpClient,
+    IoProxyHandler, DriverAbstract, SignalBranch
 }
+require! './twitter-lib': {TwitterExtended}
+require! 'prelude-ls': {unique-by}
 
-client = new Twitter do
+client = new TwitterExtended do
     # see https://chimpgroup.com/knowledgebase/twitter-api-keys/
     consumer_key: c.consumer_key
     consumer_secret: c.consumer_secret
@@ -13,31 +14,6 @@ client = new Twitter do
     access_token_secret: c.access_token_secret
 
 hashtag = 'TR24Haziran2018'
-
-get-replies = (tweet, callback) ->
-    '''
-    Pushes hierarchical replies into `tweet.replies` attribute
-    '''
-    user = tweet.user.screen_name
-    tweet-id = tweet.id
-    _replies = []
-    error, tweets <~ client.get 'search/tweets.json', {q: "to:#{user}", since_id: tweet-id}
-    branch = new SignalBranch
-    for let reply in tweets.statuses
-        #console.log "examining reply: #{reply.id}"
-        if reply.in_reply_to_status_id is tweet-id
-            signal = branch.add!
-            #console.log "got a reply: #{reply.in_reply_to_status_id} <<< #{reply.id}: #{reply.text}"
-            err, tweets <~ get-replies reply
-            reply.replies = tweets
-            _replies.push reply
-            signal.go!
-        else
-            #console.log "Unrelated: ", reply.text
-            null
-    err, res <~ branch.joined
-    #console.log "Returning replies for #{user}: ", _replies
-    callback err, _replies
 
 dump-tweet = (tweet, level=0) ->
     console.log "#{'-' * level}#{if level > 0 then '>' else ''} #{tweet.text} (<3 = #{tweet.favorite_count})"
@@ -67,7 +43,7 @@ class TwitterDriver extends DriverAbstract
     ->
         super!
         @started!
-        
+
     write: (handle, value, respond) ->
         # we got a write request to the target
         console.log "we got ", value, "to write as ", handle.route
@@ -81,11 +57,30 @@ class TwitterDriver extends DriverAbstract
         # we are requested to read the handle value from the target
         if handle.name is \ballot-totals
             console.log "getting ballot totals"
-            err, tweets <~ client.get 'search/tweets.json', {q: '#' + hashtag}
-            respond err, tweets?.statuses?.length
+            err, res <~ client.get-tweets {q: '#' + hashtag}
+            total-ballots = 0
+            ballot-tweets = []
+            for tweet in res
+                #console.log "#{tweet.text}"
+                if tweet.retweeted_status
+                    # skip retweets
+                    continue
+
+                if tweet.extended_entities?.media
+                    #console.log "...media is ", that
+                    for m in that
+                        if m.type is \photo
+                            total-ballots++
+                            ballot-tweets.push do
+                                url: tweet.entities.media.0.url
+                                text: tweet.text
+                            break
+            console.log "#{total-ballots} of #{res.length} tweets contain ballot photos."
+            respond err, {count: total-ballots, tweets: ballot-tweets}
         else
             console.log "we are requested to read", handle
             respond err="unknown handle"
+
 
 # Handle can be in any format that its driver is able to understand.
 twitter-driver = new TwitterDriver
@@ -93,6 +88,7 @@ handle =
     name: 'ballot-totals'
     readonly: yes
     route: "@twitter-service.total2"
+    watch: 1min * 60_000ms
 
 new IoProxyHandler handle, handle.route, twitter-driver
 

@@ -1,17 +1,46 @@
 //-
-h3.ui.header Anlık Durum
+h3.ui.header 
+    | Güncel Durum 
+    | #[a(href="https://twitter.com/hashtag/TR24Haziran2018?src=hash"): .ui.blue.label #TR24Haziran2018]
 
-sync(route="@twitter-service.total2" value="{{twitter.total2}}")
-ui-progress.green(min="0" max="100" value="{{twitter.total2}}")
+p (Dakikada 1 kez güncellenir, son güncelleme: {{unixToReadable(udate)}})
+
+sync(route="@twitter-service.total2" value="{{twitter.total2}}" date="{{udate}}")
+ui-progress.green(min="0" max="10000" value="{{twitter.total2.count}}")
     .label {{value}}/{{max}} Tutanak 
+
+h4.ui.header.block.top.attached Mevcut Tutanaklar
+.ui.segment.bottom.attached(style="height: 300px; overflow: auto")      
+    .ui.message.red.
+        Kırmızı ile işaretlenen tutanaklar anlaşılamamıştır, anlaşılır formatta 
+        dökümü oluşturulup tweet'in altına yorum olarak girilerek düzeltilebilir.
     
-input(value="{{twitter.total2}}")
-    
-include ./help.pug
+    .ui.list.relaxed.divided.selection 
+        +each('twitter.total2.tweets as tweet')
+            +with('checkFormat(tweet.text) as state')
+                .item               
+                    icon.large.middle.aligned.twitter(class="{{state}}")
+                    .content
+                        a(href="{{tweet.url}}" class="{{state}}") 
+                            span.text(class="{{state}}") {{tweet.text}}                
+
 .ui.segments                         
     .ui.segment
         anchor tweet-olustur
         h2.ui.header: a(href="#tweet-olustur") Tutanak Metni Oluştur 
+        .ui.list 
+            .item 
+                .content.
+                    1. Aşağıda istenen alanları tutanaktan okuyarak giriniz.
+                    (kalan dökümler 10 bin tutanak toplandıktan sonra girilecektir)
+            .item
+                .content.
+                    2. "Tweet Metni Oluştur"un.
+            .item 
+                .content.
+                    3. Ortaya çıkan tweet metnini yeni oluşturduğunuz (ya da mevcut olan)
+                    tweet'e yapıştırın.
+                
         .ui.form
             .fields 
                 .field 
@@ -32,11 +61,10 @@ include ./help.pug
                     label Sandık No 
                     input(value="{{record.ballot}}" type="number")
                         
-        .ui.message.blue(style="margin: 2em").
-            Şimdilik diğer dökümlere gerek yoktur, 10 bin tutanaktan fazla toplandığında
-            içlerini doldurmaya başlayacağız.
-                        
         ack-button.green(on-click="createTweet") Tweet Metni Oluştur
+
+        a(href="https://github.com/ceremcem/vote-is-well/issues")
+            .ui.button.orange.icon.float.right: icon.help Sorun Bildir
 
         modal(title="Tweet Metni" basedon="{{mymodal1}}")
             .ui.p Aşağıdaki Tweet'i ilgili tutanağa yorum olarak yapıştırın:
@@ -50,4 +78,4 @@ include ./help.pug
                         icon.copy Kopyala
 
 
-div(style="height: 300px")
+.spacer 
