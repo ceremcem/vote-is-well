@@ -12,8 +12,26 @@
             p
                 +apply('renderMarkup .content')
 
+h1.ui.header.top.attached.block.big İletişim
+.ui.segment.bottom.attached 
+    .ui.grid.equal.width.stackable
+        .column 
+            .ui.p
+                | Her türlü istek, sorun ve öneri için (Türkçe de yazabilirsiniz): 
+                br 
+                br 
+                a(href="https://github.com/ceremcem/vote-is-well/issues")
+                    .ui.big.label.green: icon.github Github 
 
-h1.ui.header.top.attached.block.big Sık Sorulan Sorular
+        .column 
+            .ui.p
+                | Duyuruları takip etmek için: 
+                br 
+                br 
+                a(href="https://twitter.com/acikteyit")
+                    .ui.big.label.blue: icon.twitter @acikteyit 
+            
+h1.ui.header.top.attached.block.big Açıklamalar
 .ui.segment.bottom.attached
     .ui.accordion(as-accordion)
         anchor design
@@ -22,7 +40,9 @@ h1.ui.header.top.attached.block.big Sık Sorulan Sorular
             p Sistemin tasarımında dikkate alınan hedefler şunlardır: 
             
             ol
-                li Açık kaynaklı olmalı, herhangi bir şüpheye mahal vermemelidir. (bkz. #[a(href="https://github.com/ceremcem/vote-is-well") Kaynak Kodlar])
+                li.
+                    Açık kaynaklı olmalı, herhangi bir şüpheye mahal vermemelidir. 
+                    (bkz. #[a(href="https://github.com/ceremcem/vote-is-well"): icon.github Kaynak Kodlar])
                 li Veritabanı, tüm katılımcılarla anlık olarak paylaşılmalıdır.
                 li Sistem erişilebilir olmalı, mümkün olduğunca fazla çeşit cihazla ulaşılabilmelidir.
                 li.
@@ -30,7 +50,6 @@ h1.ui.header.top.attached.block.big Sık Sorulan Sorular
                     istediğinde sistem çökmemelidir.
                 li Sistemin bir hata takip mekanizması olmalıdır (bkz. #[a(href="https://github.com/ceremcem/vote-is-well/issues"): icon.github Github])
 
-    .ui.accordion(as-accordion)
         anchor howto
         .title: icon.dropdown Çalışma Şekli
         .content 
@@ -42,7 +61,6 @@ h1.ui.header.top.attached.block.big Sık Sorulan Sorular
                     
             p Ayrıntılar için (bkz. #[a(href="https://github.com/ceremcem/vote-is-well/blob/master/doc/Algorithm-tr.md") Algoritma])
 
-    .ui.accordion(as-accordion)
         anchor history
         .title: icon.dropdown Projenin Hikayesi 
         .content(style="background-color: teal; border-radius: 10px")
@@ -50,22 +68,21 @@ h1.ui.header.top.attached.block.big Sık Sorulan Sorular
                 +each('_.reverse(history)')
                     +apply('timeline-item')
 
-    .ui.accordion(as-accordion)
         anchor development
         .title: icon.dropdown Kim tarafından geliştiriliyor?
         .content 
             p (bkz. #[a(href="https://github.com/ceremcem/vote-is-well/graphs/contributors"): icon.github geliştiriciler])
 
-.ui.message.orange
-    anchor todo
-    h3.ui.header Yapılacaklar 
-    ol
-        li.
-            Twitter servisi yeni bir tutanak yüklenir yüklenmez "Görüldü, uygundur" 
-            şeklinde bir mesaj bıraksın.
-        li.
-            İşlenmesi gereken tweetler işbu sayfa aracılığıyla listelensin. 
-        li.
-            Twitter'a tutanak yükleme hızının grafiği bu sayfada gösterilsin.
+        anchor todo
+        .title: icon.dropdown Yol Haritası 
+        .content 
+            .ui.list
+                .item.
+                    Twitter servisi yeni bir tutanak yüklenir yüklenmez "Görüldü, uygundur" 
+                    şeklinde bir mesaj bıraksın.
+                .item.strike-out.
+                    İşlenmesi gereken tweetler işbu sayfa aracılığıyla listelensin. 
+                .item.strike-out.
+                    Twitter'a tutanak yükleme hızının grafiği bu sayfada gösterilsin.
 
 .spacer
