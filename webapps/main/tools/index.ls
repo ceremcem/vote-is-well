@@ -34,17 +34,3 @@ Ractive.components['tools'] = Ractive.extend do
                     text: """
                         Tweet panoya kopyalandı.
                         """
-    data: ->
-        checkFormat: (text) ->
-            if text.to-lower-case!.match "sandık"
-                return 'green'
-            else
-                return 'red'
-
-        tweetsGraph: (tweets) ->
-            total = 0
-            series = []
-            for (tweets or []) |> sort-by (.date)
-                series.push {key: ..date, value: ++total}
-
-            series

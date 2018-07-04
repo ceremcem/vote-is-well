@@ -1,0 +1,38 @@
+h3.ui.header.block
+    | Güncel Durum 
+    +space
+    +space
+    a(href="https://twitter.com/hashtag/TR24Haziran2018?src=hash")
+        .ui.blue.tag.label #TR24Haziran2018
+
+p (Dakikada 1 kez güncellenir, son güncelleme: {{unixToReadable(udate)}})
+
+sync(route="@twitter-service.total2" value="{{twitter.total2}}" date="{{udate}}")
+ui-progress.green(min="0" max="10000" value="{{twitter.total2.count}}")
+    .label {{value}}/{{max}} Tutanak 
+
+anchor upload-graph
+h4.ui.header.top.attached.inverted Twitter'a Tutanak Yüklenme Adetleri #[a(href="#upload-graph"): icon.linkify]
+.ui.segment.bottom.attached(style="padding-top: 5em; background-color: rgb(54,54,54)")
+    time-series(
+        data="{{tweetsGraph(twitter.total2.tweets)}}"
+        y-format="#"
+        name="Toplam"
+        )             
+
+h4.ui.header.block.top.attached Mevcut Tutanaklar
+.ui.segment.bottom.attached        
+    .ui.message.orange.
+        Kırmızı ile işaretlenen tutanaklar "anlaşılamadı" demektir, anlaşılır formatta 
+        dökümü oluşturulup tweet'in altına yorum olarak girilerek düzeltilebilir.
+
+    .ui.list.relaxed.divided.selection(style="height: 300px; overflow: auto")  
+        +each('twitter.total2.tweets as tweet')
+            +with('checkFormat(tweet.text) as state')
+                a.item(href="{{tweet.url}}" class="{{state}}")
+                    icon.large.middle.aligned.twitter(class="{{state}}")
+                    .content 
+                        //-.header {{unixToReadable(tweet.date)}}
+                        .description
+                            span.text(class="{{state}}") {{tweet.text}}   
+.spacer 

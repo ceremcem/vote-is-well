@@ -13,12 +13,13 @@ Ractive.components['side-menu'] = Ractive.extend do
     computed:
         menu:
             get: ->
-                #* title: 'Hata Takip'
-                #  url: '#/issues'
                 x = []
                     ..push do
                         title: 'Araçlar'
                         url: '#/tools'
+                    ..push do
+                        title: 'İstatistikler'
+                        url: '#/stats'
                     ..push do
                         title: 'Hakkında'
                         url: '#/about'

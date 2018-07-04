@@ -1,11 +1,11 @@
 require! 'components'
 require! 'aea/default-helpers'
-require! 'aea'
 require! './home'
 require! './menu'
 require! './login'
 require! './about'
 require! './tools'
+require! './stats'
 
 new Ractive do
     el: \body
