@@ -1,9 +1,10 @@
-require! 'dcs': {SignalBranch}
+require! 'dcs': {SignalBranch, Logger}
 require! 'twitter': Twitter
 
 export class TwitterExtended extends Twitter
     (credentials) ->
         super credentials
+        @log = new Logger "twitter client"
 
     get-replies: (tweet, callback) ->
         '''
@@ -19,7 +20,7 @@ export class TwitterExtended extends Twitter
             if reply.in_reply_to_status_id is tweet-id
                 signal = branch.add!
                 #console.log "got a reply: #{reply.in_reply_to_status_id} <<< #{reply.id}: #{reply.text}"
-                err, tweets <~ get-replies reply
+                err, tweets <~ @get-replies reply
                 reply.replies = tweets
                 _replies.push reply
                 signal.go!
@@ -37,7 +38,7 @@ export class TwitterExtended extends Twitter
             _flatten.push ..
         return _flatten
 
-    get-tweets: (query, callback) ->
+    get-all: (query, callback) ->
         since_id = 0
         max_id = 0
         total = 0
@@ -55,17 +56,13 @@ export class TwitterExtended extends Twitter
                 console.error "we have an error here: ", err
                 _err := err
                 return op!
-
-            _res := _res ++ tweets.statuses
-
+            _res ++= tweets.statuses
             count = tweets.statuses?.length or 0
             total += count
             #console.log "...since #{since_id} got #{count} tweets. (total: #{total})"
             if tweets.statuses.length < page-count
                 #console.log "__this seems the last page."
                 return op!
-
-
             # get until the bottom of current tweets
             for tweets.statuses or []
                 if ..id < max_id or max_id is 0
