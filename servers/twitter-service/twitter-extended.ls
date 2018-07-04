@@ -55,17 +55,13 @@ export class TwitterExtended extends Twitter
                 console.error "we have an error here: ", err
                 _err := err
                 return op!
-
-            _res := _res ++ tweets.statuses
-
+            _res ++= tweets.statuses
             count = tweets.statuses?.length or 0
             total += count
             #console.log "...since #{since_id} got #{count} tweets. (total: #{total})"
             if tweets.statuses.length < page-count
                 #console.log "__this seems the last page."
                 return op!
-
-
             # get until the bottom of current tweets
             for tweets.statuses or []
                 if ..id < max_id or max_id is 0
