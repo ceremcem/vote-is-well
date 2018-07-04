@@ -1,5 +1,6 @@
 nested-cities = require 'db/turkey-cities-json/nested'
 require! 'aea': {copy-to-clipboard}
+require! 'prelude-ls': {sort-by}
 
 Ractive.components['tools'] = Ractive.extend do
     template: RACTIVE_PREPARSE('index.pug')
@@ -39,3 +40,11 @@ Ractive.components['tools'] = Ractive.extend do
                 return 'green'
             else
                 return 'red'
+
+        tweetsGraph: (tweets) ->
+            total = 0
+            series = []
+            for (tweets or []) |> sort-by (.date)
+                series.push {key: ..date, value: ++total}
+
+            series

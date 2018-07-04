@@ -3,6 +3,8 @@ require! './twitter-extended': {TwitterExtended}
 require! 'dcs': {
     DcsTcpClient, IoProxyHandler, DriverAbstract, SignalBranch
 }
+require! 'moment'
+
 hashtag = 'TR24Haziran2018'
 
 client = new TwitterExtended do
@@ -53,7 +55,7 @@ class TwitterDriver extends DriverAbstract
     read: (handle, respond) ->
         # we are requested to read the handle value from the target
         if handle.name is \ballot-totals
-            console.log "getting ballot totals"
+            client.log.log "getting ballot totals"
             err, res <~ client.get-all {q: '#' + hashtag}
             total-ballots = 0
             ballot-tweets = []
@@ -71,8 +73,11 @@ class TwitterDriver extends DriverAbstract
                             ballot-tweets.push do
                                 url: tweet.entities.media.0.url
                                 text: tweet.text
+                                date: moment tweet.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en' .value-of!
+
                             break
-            console.log "#{total-ballots} of #{res.length} tweets contain ballot photos."
+            client.log.log "#{total-ballots} of #{res.length} tweets contain ballot photos."
+            #console.log JSON.stringify ballot-tweets.0
             respond err, {count: total-ballots, tweets: ballot-tweets}
         else
             console.log "we are requested to read", handle

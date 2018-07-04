@@ -1,9 +1,10 @@
-require! 'dcs': {SignalBranch}
+require! 'dcs': {SignalBranch, Logger}
 require! 'twitter': Twitter
 
 export class TwitterExtended extends Twitter
     (credentials) ->
         super credentials
+        @log = new Logger "twitter client"
 
     get-replies: (tweet, callback) ->
         '''

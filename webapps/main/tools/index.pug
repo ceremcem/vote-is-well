@@ -10,72 +10,81 @@ ui-progress.green(min="0" max="10000" value="{{twitter.total2.count}}")
     .label {{value}}/{{max}} Tutanak 
 
 h4.ui.header.block.top.attached Mevcut Tutanaklar
-.ui.segment.bottom.attached(style="height: 300px; overflow: auto")      
-    .ui.message.red.
-        Kırmızı ile işaretlenen tutanaklar anlaşılamamıştır, anlaşılır formatta 
+.ui.segment.bottom.attached        
+    .ui.message.orange.
+        Kırmızı ile işaretlenen tutanaklar "anlaşılamadı" demektir, anlaşılır formatta 
         dökümü oluşturulup tweet'in altına yorum olarak girilerek düzeltilebilir.
-    
-    .ui.list.relaxed.divided.selection 
+
+    .ui.list.relaxed.divided.selection(style="height: 300px; overflow: auto")  
         +each('twitter.total2.tweets as tweet')
             +with('checkFormat(tweet.text) as state')
-                .item               
+                a.item(href="{{tweet.url}}" class="{{state}}")
                     icon.large.middle.aligned.twitter(class="{{state}}")
-                    .content
-                        a(href="{{tweet.url}}" class="{{state}}") 
-                            span.text(class="{{state}}") {{tweet.text}}                
+                    .content 
+                        //-.header {{unixToReadable(tweet.date)}}
+                        .description
+                            span.text(class="{{state}}") {{tweet.text}}   
+    
+anchor upload-graph
+h4.ui.header.top.attached.inverted Twitter'a Tutanak Yüklenme Adetleri #[a(href="#upload-graph"): icon.linkify]
+.ui.segment.bottom.attached(style="padding-top: 5em; background-color: rgb(54,54,54)")
+    time-series(
+        data="{{tweetsGraph(twitter.total2.tweets)}}"
+        y-format="#"
+        name="Toplam"
+        )             
 
-.ui.segments                         
-    .ui.segment
-        anchor tweet-olustur
-        h2.ui.header: a(href="#tweet-olustur") Tutanak Metni Oluştur 
-        .ui.list 
-            .item 
-                .content.
-                    1. Aşağıda istenen alanları tutanaktan okuyarak giriniz.
-                    (kalan dökümler 10 bin tutanak toplandıktan sonra girilecektir)
-            .item
-                .content.
-                    2. "Tweet Metni Oluştur"un.
-            .item 
-                .content.
-                    3. Ortaya çıkan tweet metnini yeni oluşturduğunuz (ya da mevcut olan)
-                    tweet'e yapıştırın.
-                
-        .ui.form
+anchor tweet-olustur
+h2.ui.top.attached.block.header Tutanak Metni Oluştur #[a(href="#tweet-olustur"): icon.linkify]
+.ui.segment
+    .ui.list 
+        .item 
+            .content.
+                1. Aşağıda istenen alanları tutanaktan okuyarak giriniz.
+                (kalan dökümler 10 bin tutanak toplandıktan sonra girilecektir)
+        .item
+            .content.
+                2. "Tweet Metni Oluştur"un.
+        .item 
+            .content.
+                3. Ortaya çıkan tweet metnini yeni oluşturduğunuz (ya da mevcut olan)
+                tweet'e yapıştırın.
+            
+    .ui.form
+        .fields 
+            .field 
+                label İl 
+                dropdown(
+                    data="{{cities}}"
+                    selected-key="{{record.city}}"
+                    key="city"
+                    name="city"
+                    on-select="selectCity")                    
+            .field 
+                label İlçe 
+                dropdown(
+                    data="{{districts}}"
+                    selected-key="{{record.district}}"
+                    )
+            .field 
+                label Sandık No 
+                input(value="{{record.ballot}}" type="number")
+                    
+    ack-button.green(on-click="createTweet") Tweet Metni Oluştur
+
+    a(href="https://github.com/ceremcem/vote-is-well/issues")
+        .ui.button.orange.icon.float.right: icon.help Sorun Bildir
+
+    modal(title="Tweet Metni" basedon="{{mymodal1}}")
+        .ui.p Aşağıdaki Tweet'i ilgili tutanağa yorum olarak yapıştırın:
+        .ui.form 
             .fields 
-                .field 
-                    label İl 
-                    dropdown(
-                        data="{{cities}}"
-                        selected-key="{{record.city}}"
-                        key="city"
-                        name="city"
-                        on-select="selectCity")                    
-                .field 
-                    label İlçe 
-                    dropdown(
-                        data="{{districts}}"
-                        selected-key="{{record.district}}"
-                        )
-                .field 
-                    label Sandık No 
-                    input(value="{{record.ballot}}" type="number")
-                        
-        ack-button.green(on-click="createTweet") Tweet Metni Oluştur
-
-        a(href="https://github.com/ceremcem/vote-is-well/issues")
-            .ui.button.orange.icon.float.right: icon.help Sorun Bildir
-
-        modal(title="Tweet Metni" basedon="{{mymodal1}}")
-            .ui.p Aşağıdaki Tweet'i ilgili tutanağa yorum olarak yapıştırın:
-            .ui.form 
-                .fields 
-                    textarea(value="{{tweetText}}" rows="2" readonly) 
-                .fields 
-                    btn.icon.blue(
-                        on-click="copyTweet" 
-                        tooltip="Tweet'i panoya kopyala")
-                        icon.copy Kopyala
+                textarea(value="{{tweetText}}" rows="2" readonly) 
+            .fields 
+                btn.icon.blue(
+                    on-click="copyTweet" 
+                    tooltip="Tweet'i panoya kopyala")
+                    icon.copy Kopyala
 
 
 .spacer 
