@@ -10,6 +10,7 @@ Ractive.components['tools'] = Ractive.extend do
         @on do
             selectCity: (ctx, item, proceed) ->
                 @set \districts, [{id: .., name: ..} for item.districts]
+                @set \record.district, ''
                 proceed!
 
             createTweet: (ctx) ->
