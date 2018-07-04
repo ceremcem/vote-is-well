@@ -1,10 +1,9 @@
 require! '../../config': {c, dcs-port}
+require! './twitter-extended': {TwitterExtended}
 require! 'dcs': {
-    sleep, Actor, DcsTcpClient,
-    IoProxyHandler, DriverAbstract, SignalBranch
+    DcsTcpClient, IoProxyHandler, DriverAbstract, SignalBranch
 }
-require! './twitter-lib': {TwitterExtended}
-require! 'prelude-ls': {unique-by}
+hashtag = 'TR24Haziran2018'
 
 client = new TwitterExtended do
     # see https://chimpgroup.com/knowledgebase/twitter-api-keys/
@@ -12,8 +11,6 @@ client = new TwitterExtended do
     consumer_secret: c.consumer_secret
     access_token_key: c.access_token_key
     access_token_secret: c.access_token_secret
-
-hashtag = 'TR24Haziran2018'
 
 dump-tweet = (tweet, level=0) ->
     console.log "#{'-' * level}#{if level > 0 then '>' else ''} #{tweet.text} (<3 = #{tweet.favorite_count})"
@@ -57,7 +54,7 @@ class TwitterDriver extends DriverAbstract
         # we are requested to read the handle value from the target
         if handle.name is \ballot-totals
             console.log "getting ballot totals"
-            err, res <~ client.get-tweets {q: '#' + hashtag}
+            err, res <~ client.get-all {q: '#' + hashtag}
             total-ballots = 0
             ballot-tweets = []
             for tweet in res

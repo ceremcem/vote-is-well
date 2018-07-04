@@ -19,7 +19,7 @@ export class TwitterExtended extends Twitter
             if reply.in_reply_to_status_id is tweet-id
                 signal = branch.add!
                 #console.log "got a reply: #{reply.in_reply_to_status_id} <<< #{reply.id}: #{reply.text}"
-                err, tweets <~ get-replies reply
+                err, tweets <~ @get-replies reply
                 reply.replies = tweets
                 _replies.push reply
                 signal.go!
@@ -37,7 +37,7 @@ export class TwitterExtended extends Twitter
             _flatten.push ..
         return _flatten
 
-    get-tweets: (query, callback) ->
+    get-all: (query, callback) ->
         since_id = 0
         max_id = 0
         total = 0
