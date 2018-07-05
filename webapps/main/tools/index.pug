@@ -1,19 +1,29 @@
 h2.ui.top.attached.block.header Tutanak Metni Oluştur 
 .ui.segment.bottom.attached 
-    .ui.message
-        h4.header.ui İzlenecek Adımlar
-        .ui.list 
-            .item 
-                .content.
-                    1. Aşağıda istenen alanları tutanaktan okuyarak giriniz.
-                    (kalan dökümler 10 bin tutanak toplandıktan sonra girilecektir)
-            .item
-                .content.
-                    2. "Tweet Metni Oluştur"un.
-            .item 
-                .content.
-                    3. Kopyalayıp yeni oluşturduğunuz (ya da mevcut olan) tweet'e yapıştırın.
+    h3.header.ui İzlenecek Adımlar
+    .ui.list 
+        .item 
+            .content.
+                1. Aşağıda istenen alanları tutanaktan okuyarak giriniz.
+                (kalan dökümler 10 bin tutanak toplandıktan sonra girilecektir)
+        .item
+            .content.
+                2. "Tweet Metni Oluştur"un.
+        .item 
+            .content.
+                3. Kopyalayıp yeni oluşturduğunuz (ya da mevcut olan) tweet'e yapıştırın.
+                    
+    .ui.message 
+        h4.header.ui Hatalar ve çözümler
+        .ui.accordion(as-accordion)
+            .title: icon.dropdown Tweet formatı uygun değil 
+            .content
+                .ui.p.
+                    Eğer gönderdiğiniz tutanağa otomatik servis tarafından "Tweet formatı 
+                    uygun değil" şeklinde yorum yapıldıysa gönderdiğiniz tweet'i silip 
+                    buradaki yönergeye göre baştan yükleyiniz.
 
+.ui.segment 
     .ui.form
         .fields 
             .field 
