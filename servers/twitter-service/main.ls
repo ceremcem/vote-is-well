@@ -1,9 +1,10 @@
 require! '../../config': {c, dcs-port}
-require! './twitter-extended': {TwitterExtended}
+require! './twitter-extended': {TwitterExtended, get-unix-ts}
 require! 'dcs': {
     DcsTcpClient, IoProxyHandler, DriverAbstract, SignalBranch
 }
-require! 'moment'
+require! 'prelude-ls':  {sort-by, filter, map, find, compact}
+require! './asciifold': {asciifold}
 
 hashtag = 'TR24Haziran2018'
 
@@ -14,24 +15,17 @@ client = new TwitterExtended do
     access_token_key: c.access_token_key
     access_token_secret: c.access_token_secret
 
-dump-tweet = (tweet, level=0) ->
-    console.log "#{'-' * level}#{if level > 0 then '>' else ''} #{tweet.text} (<3 = #{tweet.favorite_count})"
-    for tweet.replies or []
-        dump-tweet .., (level+1)
-
-dump-from-hashtag = (hashtag) ->
-    error, tweets <~ client.get 'search/tweets.json', {q: '#' + hashtag}
-    console.log "Got #{tweets.statuses.length} tweets."
-    for let orig in tweets.statuses
-        err, tweets <~ get-replies orig
-        console.log "--------------------------------"
-        console.log "Orig tweet is: "
-        dump-tweet orig
-        console.log "...and its replies: "
-        for tweets
-            dump-tweet .., 1
-        console.log "================================"
-
+/*
+err, res <~ client.get 'statuses/user_timeline.json', {screen_name: "acikteyit_w1"}
+for let index, tweet of res
+    console.log "sending reply to #{tweet.user.screen_name} (#{tweet.id}): #{tweet.text}"
+    err, res <~ client.send-tweet {text: "reply seq #{index}", reply-to: tweet}
+    unless err
+        console.log "reply is sent: ", res
+    else
+        console.log "reply failed!"
+return
+*/
 
 new DcsTcpClient port: dcs-port
     .login do
@@ -71,12 +65,65 @@ class TwitterDriver extends DriverAbstract
                         if m.type is \photo
                             total-ballots++
                             ballot-tweets.push do
+                                tweet: tweet
                                 url: tweet.entities.media.0.url
                                 text: tweet.text
-                                date: moment tweet.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en' .value-of!
-
+                                date: get-unix-ts tweet
                             break
-            client.log.log "#{total-ballots} of #{res.length} tweets contain ballot photos."
+
+            ballot-tweets = sort-by (.date), ballot-tweets # must be in order for graph
+            last-tweet = ballot-tweets.5
+            client.log.log "#{total-ballots} of #{res.length} tweets contain photos."
+
+            client.log.log "Getting replies..."
+            branch = new SignalBranch
+            for let ballot-tweets
+                signal = branch.add!
+                err, res <~ client.get-flat-replies ..tweet
+                ..replies = res
+                signal.go!
+            err, res <~ branch.joined
+            console.log "...got all replies for all tweets"
+
+            for let ballot-tweets
+                console.log "(#{..tweet.id})", ..text
+                if ..replies
+                    for that
+                        console.log (">" * ..level), ..text
+
+                # check if tweet text is okay
+                if asciifold ..text .match /sandik: [a-z]+\/[a-z]+\/[0-9]+/
+                    #console.log "Tweet seems okay."
+                    ..ok = yes
+                else
+                    console.error "Tweet seems not okay!"
+                    service-replies = ..replies
+                        |> filter (.user.screen_name is c.screen_name)
+                        |> map ((t)-> {
+                            cmd: (t.text.match /\(Servis: (.*)\).*/ ?.1),
+                            date: t.created_at
+                            })
+                        |> compact
+
+                    console.log "Current service replies are: ", JSON.stringify service-replies
+                    if find (.cmd is "NOK"), service-replies
+                        console.log "...marked before, not marking again."
+                    else
+                        console.log "...not marked before, marking:"
+                        err, res <~ client.send-tweet do
+                            text: "(Servis: NOK) Tweet formatı uygun değil. (bkz. https://ceremcem.github.io/acikteyit/\#/tools)",
+                            reply-to: ..tweet
+                        unless err
+                            console.log "Response to my tweet is sent."
+                        else
+                            console.error "Can not respond to the tweet!"
+
+                # cleanup tweet from response
+                delete ..tweet
+                if ..replies
+                    ..replies = [..text for that]
+                console.log "------------------------------"
+
             #console.log JSON.stringify ballot-tweets.0
             respond err, {count: total-ballots, tweets: ballot-tweets}
         else
@@ -85,13 +132,15 @@ class TwitterDriver extends DriverAbstract
 
 
 # Handle can be in any format that its driver is able to understand.
+handles =
+    * name: 'ballot-totals'
+      readonly: yes
+      route: "@twitter-service.total2"
+      watch: 10min * 60_000ms
+    ...
+
 twitter-driver = new TwitterDriver
-handle =
-    name: 'ballot-totals'
-    readonly: yes
-    route: "@twitter-service.total2"
-    watch: 1min * 60_000ms
 
-new IoProxyHandler handle, handle.route, twitter-driver
-
-#dump-from-hashtag \TR24Haziran2018
+# Fire up handles
+for let handles
+    new IoProxyHandler .., ..route, twitter-driver
