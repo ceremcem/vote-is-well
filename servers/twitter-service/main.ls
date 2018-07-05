@@ -53,23 +53,27 @@ class TwitterDriver extends DriverAbstract
             err, res <~ client.get-all {q: '#' + hashtag}
             total-ballots = 0
             ballot-tweets = []
-            for tweet in res
-                #console.log "#{tweet.text}"
-                if tweet.retweeted_status
-                    # skip retweets
-                    continue
+            if err
+                console.log "we couldn't get the hashtag results"
+                return respond err 
+            else
+                for tweet in res
+                    #console.log "#{tweet.text}"
+                    if tweet.retweeted_status
+                        # skip retweets
+                        continue
 
-                if tweet.extended_entities?.media
-                    #console.log "...media is ", that
-                    for m in that
-                        if m.type is \photo
-                            total-ballots++
-                            ballot-tweets.push do
-                                tweet: tweet
-                                url: tweet.entities.media.0.url
-                                text: tweet.text
-                                date: get-unix-ts tweet
-                            break
+                    if tweet.extended_entities?.media
+                        #console.log "...media is ", that
+                        for m in that
+                            if m.type is \photo
+                                total-ballots++
+                                ballot-tweets.push do
+                                    tweet: tweet
+                                    url: tweet.entities.media.0.url
+                                    text: tweet.text
+                                    date: get-unix-ts tweet
+                                break
 
             ballot-tweets = sort-by (.date), ballot-tweets # must be in order for graph
             last-tweet = ballot-tweets.5
@@ -80,15 +84,16 @@ class TwitterDriver extends DriverAbstract
             for let ballot-tweets
                 signal = branch.add!
                 err, res <~ client.get-flat-replies ..tweet
-                ..replies = res
+                unless err
+                    ..replies = res
                 signal.go!
             err, res <~ branch.joined
-            console.log "...got all replies for all tweets"
-
             for let ballot-tweets
                 console.log "(#{..tweet.id})", ..text
-                if ..replies
-                    for that
+                unless ..replies
+                    console.log "_____ no replies can be fetched?"
+                else
+                    for ..replies
                         console.log (">" * ..level), ..text
 
                 # check if tweet text is okay
@@ -96,33 +101,38 @@ class TwitterDriver extends DriverAbstract
                     #console.log "Tweet seems okay."
                     ..ok = yes
                 else
-                    console.error "Tweet seems not okay!"
-                    service-replies = ..replies
-                        |> filter (.user.screen_name is c.screen_name)
-                        |> map ((t)-> {
-                            cmd: (t.text.match /\(Servis: (.*)\).*/ ?.1),
-                            date: t.created_at
-                            })
-                        |> compact
-
-                    console.log "Current service replies are: ", JSON.stringify service-replies
-                    if find (.cmd is "NOK"), service-replies
-                        console.log "...marked before, not marking again."
+                    console.error "Tweet seems not okay! checking if marked before..."
+                    unless typeof! ..replies is \Array
+                        # if we fetched the replies succesfully, they must be an array.
+                        console.log "...didn't we fetch the replies correctly?"
                     else
-                        console.log "...not marked before, marking:"
-                        err, res <~ client.send-tweet do
-                            text: "(Servis: NOK) Tweet formatı uygun değil. (bkz. https://ceremcem.github.io/acikteyit/\#/tools)",
-                            reply-to: ..tweet
-                        unless err
-                            console.log "Response to my tweet is sent."
+                        service-replies = ..replies
+                            |> filter (.user.screen_name is c.screen_name)
+                            |> map ((t)-> {
+                                cmd: (t.text.match /\(Servis: ([^\)]*)\).*/ ?.1),
+                                date: t.created_at
+                                })
+                            |> compact
+
+                        console.log "Current service replies are: ", JSON.stringify service-replies
+                        if find (.cmd is "NOK"), service-replies
+                            console.log "...marked before, not marking again."
                         else
-                            console.error "Can not respond to the tweet!"
+                            console.log "...not marked before, marking"
+                            /*
+                            err, res <~ client.send-tweet do
+                                text: "(Servis: NOK) Tweet formatı uygun değil. (bkz. https://ceremcem.github.io/acikteyit/\#/tools)",
+                                reply-to: ..tweet
+                            unless err
+                                console.log "Response to my tweet is sent."
+                            else
+                                console.error "Can not respond to the tweet!"
+                            */
 
                 # cleanup tweet from response
                 delete ..tweet
                 if ..replies
                     ..replies = [..text for that]
-                console.log "------------------------------"
 
             #console.log JSON.stringify ballot-tweets.0
             respond err, {count: total-ballots, tweets: ballot-tweets}
