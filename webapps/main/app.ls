@@ -1,5 +1,5 @@
 require! 'components'
-require! 'aea/default-helpers'
+require! 'aea/defaults'
 require! './home'
 require! './menu'
 require! './login'
