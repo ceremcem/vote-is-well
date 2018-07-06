@@ -1,0 +1,16 @@
+export webserver-port = 4015
+export dcs-port = 5591
+export default-passwd = 'some-random-password'
+
+acikteyit =
+    screen_name: \acikteyit
+    consumer_key: 'get-from-twitter-app'
+    consumer_secret: 'get-from-twitter-app'
+    access_token_key: 'get-from-twitter-app'
+    access_token_secret: 'get-from-twitter-app'
+
+export c = acikteyit
+
+# the URL for aktos-dcs to connect to 
+export dcs-url = null  # in order to use localhost
+#export dcs-url = "https://aktos.io/acikteyit"
