@@ -1,1 +1,1 @@
-doc/Algorithm-tr.md
+(bkz. [doc/Algorithm-tr.md](./doc/Algorithm-tr.md))
