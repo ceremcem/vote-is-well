@@ -4,7 +4,7 @@ Seçim sonuçlarının resmi açıklamalarla tutarlılığını teyit etmek amac
 
 ## Değerlendirme Algoritması 
 
-1. Twitter'a yüklenmiş sandık sonuç tutanaklarının fotoğrafları [Twitter servisi](./twitter-service) aracılığıyla otomatik olarak okunacak. 
+1. Twitter'a yüklenmiş sandık sonuç tutanaklarının fotoğrafları [Twitter servisi](./servers/twitter-service) aracılığıyla otomatik olarak okunacak. 
 2. Tweet'in içinde ya da yorumunda yazan sandık sonuçları toplanarak seçim sonucu teyit edilecek. 
 3. Art niyetli kişi ya da yazılımlar tarafından yanlış şekilde yazılan seçim sonuçlarını elemek için:
     1. "Beğen" butonu kullanılacak. Daha çok beğeni alan seçim sonucu ifadesi _o an için_ doğru kabul edilecek.
