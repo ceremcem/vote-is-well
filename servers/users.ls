@@ -1,9 +1,7 @@
-require! 'dcs': {Actor, DcsTcpClient, CouchDcsClient, sleep}
-require! 'colors': {bg-yellow}
 require! '../config': {dcs-port, default-passwd}
 require! 'dcs/src/auth-helpers': {hash-passwd}
 
-hardcoded-users =
+export hardcoded =
     'public':
         passwd-hash: hash-passwd "public"
         routes:
@@ -12,26 +10,35 @@ hardcoded-users =
     'twitter-service':
         passwd-hash: hash-passwd "YnBXSAD5Xqhbzra3Yw4uR5CxJfY8g8Hj"
 
-new DcsTcpClient port: dcs-port
-    .login do
-        user: "auth-db"
-        password: default-passwd
+    # accounts for initialization services
+    'auth-db':
+        passwd-hash: hash-passwd default-passwd
+        routes: \@db-proxy.**
 
-new class Users extends Actor
-    ->
-        super "Users"
-        @subscribe '@auth-db'
-        db = new CouchDcsClient route: \@db-proxy
+if require.main is module
+    require! 'dcs': {Actor, DcsTcpClient, CouchDcsClient, sleep}
+    require! 'colors': {bg-yellow}
 
-        process-users = ~>
-            users = hardcoded-users
+    new DcsTcpClient port: dcs-port
+        .login do
+            user: "auth-db"
+            password: default-passwd
 
-            @log.log "Sending users..."
-            err, msg <~ @send-request {to: '@auth-db'}, users
-            if err
-                @log.err "Failed to send users: ", err
-            else
-                @log.success "Users sent:", msg.data
+    new class Users extends Actor
+        ->
+            super "Users"
+            @subscribe '@auth-db'
+            db = new CouchDcsClient route: \@db-proxy
 
-        @on-every-login ~>
-            process-users!
+            process-users = ~>
+                users = hardcoded
+
+                @log.log "Sending users..."
+                err, msg <~ @send-request {to: '@auth-db'}, users
+                if err
+                    @log.err "Failed to send users: ", err
+                else
+                    @log.success "Users sent:", msg.data
+
+            @on-every-login ~>
+                process-users!

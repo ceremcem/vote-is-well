@@ -1,8 +1,7 @@
 require! <[ fs path express ]>
-require! '../config': {dcs-port, webserver-port, default-passwd}
+require! '../config': {dcs-port, webserver-port}
 require! 'dcs': {DcsTcpServer, AuthDB, Actor}
 require! 'dcs/browser': {DcsSocketIOServer}
-require! 'dcs/src/auth-helpers': {hash-passwd}
 
 # -----------------------------------------------------------------------------
 # Webserver
@@ -32,11 +31,7 @@ process.on 'SIGINT', ->
 # -----------------------------------------------------------------------------
 # DCS section
 # -----------------------------------------------------------------------------
-db = new AuthDB do
-    # accounts for initialization services
-    'auth-db':
-        passwd-hash: hash-passwd default-passwd
-        routes: \@db-proxy.**
+db = new AuthDB (require './users' .hardcoded)
 
 new class Users extends Actor
     action: ->
