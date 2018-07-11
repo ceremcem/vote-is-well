@@ -93,7 +93,7 @@ export class TwitterExtended extends Twitter
         _err = null
         _res = []
         <~ :lo(op) ~>
-            err, tweets <~ @get 'search/tweets.json', {
+            err, tweets <~ @get (query.url or 'search/tweets.json'), {
                 q: query.q
                 since_id,
                 max_id

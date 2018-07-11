@@ -1,5 +1,5 @@
 //- router (for managing scenes)
-router(offset="50")
+router(offset="60")
 
 //- global logger 
 logger
@@ -7,30 +7,27 @@ logger
 //- realtime layer 
 aktos-dcs(url="{{dcsUrl}}")
 
+//- menu
 side-menu
+top-menu
 
 //- Scenes 
 scene.pusher(name="home" default public)
-    top-menu
     .ui.container
         home
 
 scene.pusher(name="login" public)
-    top-menu
     .ui.container
         login
 
 scene.pusher(name="about" public)
-    top-menu
     .ui.container
         about
 
 scene.pusher(name="tools" public)
-    top-menu
     .ui.container
         tools
 
 scene.pusher(name="stats" public)
-    top-menu
     .ui.container
         stats

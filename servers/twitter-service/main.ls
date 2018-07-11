@@ -4,7 +4,7 @@ require! 'dcs': {
     DcsTcpClient, IoProxyHandler, DriverAbstract, SignalBranch
 }
 require! 'prelude-ls':  {sort-by, filter, map, find, compact}
-require! './asciifold': {asciifold}
+require! 'dcs/lib/asciifold': asciifold
 
 hashtag = 'TR24Haziran2018'
 
@@ -18,14 +18,10 @@ client = new TwitterExtended do
 /*
 err, res <~ client.get 'statuses/user_timeline.json', {screen_name: "acikteyit_w1"}
 for let index, tweet of res
-    console.log "sending reply to #{tweet.user.screen_name} (#{tweet.id}): #{tweet.text}"
-    err, res <~ client.send-tweet {text: "reply seq #{index}", reply-to: tweet}
-    unless err
-        console.log "reply is sent: ", res
-    else
-        console.log "reply failed!"
+    console.log "found tweet: #{tweet.user.screen_name} (#{tweet.id}): #{tweet.text}"
 return
 */
+
 
 new DcsTcpClient port: dcs-port
     .login do
@@ -55,7 +51,7 @@ class TwitterDriver extends DriverAbstract
             ballot-tweets = []
             if err
                 console.log "we couldn't get the hashtag results"
-                return respond err 
+                return respond err
             else
                 for tweet in res
                     #console.log "#{tweet.text}"
