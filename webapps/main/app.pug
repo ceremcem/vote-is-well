@@ -31,3 +31,14 @@ scene.pusher(name="tools" public)
 scene.pusher(name="stats" public)
     .ui.container
         stats
+            
+scene.pusher(name="NOTFOUND")
+    .ui.container 
+        .ui.orange.message.big.
+            Aradığınız sayfa bulunamadı. Bunun bir hata 
+            olduğunu düşünüyorsanız lütfen 
+            #[a(href="https://github.com/ceremcem/vote-is-well/issues") hata bildirin.]
+            
+scene.pusher(name="UNAUTHORIZED")
+    .ui.container 
+        .ui.red.message Yetkiniz yok.

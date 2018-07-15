@@ -7,7 +7,6 @@
         +each('menu')
             a.item(
                 href!='{{.url}}'
-                class="{{#if @shared.router.scene === .url }}active{{/if}}"
                 )
                 b {{ .title }}
                 +iff('.icon')
@@ -22,7 +21,6 @@
                         +each('.submenu')
                             a.item(
                                 href!='{{menu[@index].url}}{{.url}}'
-                                class="{{#if @shared.router.scene === .url }}active{{/if}}"
                                 )
                                 | {{ .title }}
                                 +if('.icon')
