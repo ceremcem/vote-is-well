@@ -14,6 +14,8 @@ client = new TwitterExtended do
     consumer_secret: c.consumer_secret
     access_token_key: c.access_token_key
     access_token_secret: c.access_token_secret
+    endpoint: \fullarchive
+    environment: \prod
 
 /*
 err, res <~ client.get 'statuses/user_timeline.json', {screen_name: "acikteyit_w1"}

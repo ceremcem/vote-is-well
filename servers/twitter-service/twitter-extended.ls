@@ -20,6 +20,8 @@ export class TwitterExtended extends Twitter
     (credentials) ->
         super credentials
         @log = new Logger "twitter client"
+        @endpoint = credentials.endpoint
+        @environment = credentials.environment
 
     get-replies: (tweet, opts, callback) ->
         '''
@@ -92,34 +94,59 @@ export class TwitterExtended extends Twitter
         page-count = 100 # This is maximum value
         _err = null
         _res = []
-        <~ :lo(op) ~>
-            err, tweets <~ @get (query.url or 'search/tweets.json'), {
-                q: query.q
-                since_id,
-                max_id
-                count: page-count
-            }
-            if err
-                console.error "------------------------------"
-                console.error "we have an error here: ", err
-                console.error "------------------------------"
-                _err := err
-                return op!
-            _res ++= tweets.statuses
-            count = tweets.statuses?.length or 0
-            total += count
-            #console.log "...since #{since_id} got #{count} tweets. (total: #{total})"
-            if tweets.statuses.length < page-count
-                #console.log "__this seems the last page."
-                return op!
-            # get until the bottom of current tweets
-            for tweets.statuses or []
-                if ..id < max_id or max_id is 0
-                    max_id := ..id
-            lo(op)
-        if _err
-            _res := null
-        callback _err, _res
+
+        if @environment
+            next = null
+            <~ :lo(op) ~>
+                url = "tweets/search/#{@endpoint}/#{@environment}.json"
+                opts =
+                    query: query.q
+                if next
+                    opts.next = that
+                err, res <~ @get (query.url or url), opts
+                if err
+                    console.log "error is: ", err 
+                    _err := err
+                    return op!
+                _res ++= res.results
+                if res.next
+                    next := that
+                    lo(op)
+                else
+                    return op!
+
+            callback _err, _res
+        else
+            <~ :lo(op) ~>
+                url = "search/tweets.json"
+                opts =
+                    q: query.q
+                    since_id,
+                    max_id
+                    count: page-count
+
+                err, tweets <~ @get (query.url or url), opts
+                if err
+                    console.error "------------------------------"
+                    console.error "we have an error here: ", err
+                    console.error "------------------------------"
+                    _err := err
+                    return op!
+                _res ++= tweets.statuses
+                count = tweets.statuses?.length or 0
+                total += count
+                #console.log "...since #{since_id} got #{count} tweets. (total: #{total})"
+                if tweets.statuses.length < page-count
+                    #console.log "__this seems the last page."
+                    return op!
+                # get until the bottom of current tweets
+                for tweets.statuses or []
+                    if ..id < max_id or max_id is 0
+                        max_id := ..id
+                lo(op)
+            if _err
+                _res := null
+            callback _err, _res
 
     send-tweet: (tweet, callback) ->
         '''
