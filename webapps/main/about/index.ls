@@ -60,24 +60,24 @@ Ractive.components['about'] = Ractive.extend do
                 Seçim yapıldı.
                 '''
 
-            * date: '25 Haziran 2018'
+            * date: '25 Haziran 2018, 8:50'
+              content: '''
+                Tüm müşahitlere, ellerindeki tutanakları Twitter'a yüklemeleri konusunda
+                çağrı yapıldı. <a href="https://twitter.com/ceremcem/status/1011115529510277120">*</a>
+                '''
+
+            * date: '25 Haziran 2018, 12:00'
               content: '''
                 Muharrem İNCE, "Elimizdeki tutanaklarla YSK sonuçlarını karşılaştırdık,
                 seçim sonucunu etkileyecek bir fark görmedik, seçimin sonucunu kabul
                 ediyorum" dedi.
                 '''
 
-            * date: '25 Haziran 2018'
-              content: '''
-                Tüm müşahitlere, ellerindeki tutanakları Twitter'a yüklemeleri konusunda
-                çağrı yapıldı. <a href="https://twitter.com/ceremcem/status/1011115529510277120">*</a>
-                '''
-
             * date: '25-28 Haziran 2018'
               content: '''
                 Tüm partilere, adaylara ve sivil organizasyonlara "Ellerinizdeki tutanakları paylaşın"
-                çağrısı yapıldı, "<a href="https://twitter.com/hashtag/TutanaklarNerede?src=hash">#TutanaklarNerede</a>?"
-                diye soruldu, ancak hiçbirinden cevap alınamadı.
+                çağrısı yapıldı, "<a href="https://twitter.com/hashtag/TutanaklarNerede?src=hash">
+                #TutanaklarNerede</a>?" diye soruldu, ancak hiçbirinden cevap alınamadı.
 
                 <a href="https://twitter.com/ceremcem/status/1011125144318857216">*</a>
                 <a href="https://twitter.com/guventurks/status/1011258049300979712">*</a>
