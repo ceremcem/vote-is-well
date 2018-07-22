@@ -12,4 +12,4 @@ new Ractive do
     el: \body
     template: RACTIVE_PREPARSE('app.pug')
     data:
-        dcs-url: null # "https://aktos.io/acikteyit"
+        dcs-url: "https://aktos.io/acikteyit"
