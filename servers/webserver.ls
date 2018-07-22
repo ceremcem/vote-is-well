@@ -1,7 +1,7 @@
 require! <[ fs path express ]>
 require! '../config': {dcs-port, webserver-port}
-require! 'dcs': {DcsTcpServer, AuthDB, Actor}
-require! 'dcs/browser': {DcsSocketIOServer}
+require! 'dcs/services/dcs-proxy': {DcsSocketIOServer, DcsTcpServer, AuthDB}
+require! 'dcs': {Actor}
 
 # -----------------------------------------------------------------------------
 # Webserver
