@@ -1,3 +1,4 @@
+
 require! 'components'
 require! 'aea/defaults'
 require! './home'
@@ -11,4 +12,4 @@ new Ractive do
     el: \body
     template: RACTIVE_PREPARSE('app.pug')
     data:
-        dcs-url: require '../../config' .dcs-url
+        dcs-url: null # "https://aktos.io/acikteyit"
