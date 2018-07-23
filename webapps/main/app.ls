@@ -8,8 +8,11 @@ require! './about'
 require! './tools'
 require! './stats'
 
-new Ractive do
-    el: \body
-    template: RACTIVE_PREPARSE('app.pug')
-    data:
-        dcs-url: "https://aktos.io/acikteyit"
+try
+    new Ractive do
+        el: \body
+        template: RACTIVE_PREPARSE('app.pug')
+        data:
+            dcs-url: "https://aktos.io/acikteyit"
+catch
+    loadingError e.stack
