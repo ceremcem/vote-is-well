@@ -5,7 +5,7 @@ launch-service $(calc-session-name "$0")
 
 
 # run commands in tmux session
-run-in-tmux "cd servers/twitter-service" "./run-ls main.ls"
+run-in-tmux "cd servers/twitter-service" "echo ./run-ls main.ls"
 run-in-tmux "cd servers" "./run-ls webserver.ls"
 run-in-tmux "cd servers" "./run-ls users.ls"
 run-in-tmux "cd scada.js" "gulp --webapp main"
