@@ -4,21 +4,21 @@ h3.ui.header.block
     +space
     a(href="https://twitter.com/hashtag/TR24Haziran2018?src=hash")
         .ui.blue.tag.label #TR24Haziran2018
-
+        
 p (Dakikada 1 kez güncellenir, son güncelleme: {{unixToReadable(udate)}})
-
 sync(route="@twitter-service.total2" value="{{twitter.total2}}" date="{{udate}}")
 ui-progress.green(min="0" max="10000" value="{{twitter.total2.count}}")
     .label {{value}}/{{max}} Tutanak 
 
 anchor upload-graph
 h4.ui.header.top.attached.inverted Twitter'a Tutanak Yüklenme Adetleri #[a(href="#upload-graph"): icon.linkify]
-.ui.segment.bottom.attached(style="padding-top: 5em; background-color: rgb(54,54,54)")
-    time-series(
-        data="{{tweetsGraph(twitter.total2.tweets)}}"
-        y-format="#"
-        name="Toplam"
-        )             
+async
+    .ui.segment.bottom.attached(style="padding-top: 5em; background-color: rgb(54,54,54)")
+        time-series(
+            data="{{tweetsGraph(twitter.total2.tweets)}}"
+            y-format="#"
+            name="Toplam"
+            )             
 
 h4.ui.header.block.top.attached Mevcut Tutanaklar
 .ui.segment.bottom.attached        
