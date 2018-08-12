@@ -7,9 +7,6 @@ Ractive.components['top-menu'] = Ractive.extend do
 Ractive.components['side-menu'] = Ractive.extend do
     template: RACTIVE_PREPARSE('side-menu.pug')
     isolated: no
-    onrender: ->
-        $ @find \.ui.sidebar .sidebar!
-
     computed:
         menu:
             get: ->
