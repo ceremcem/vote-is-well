@@ -35,7 +35,7 @@ try
                 text: "Dependencies are loaded in #{Math.round(elapsed * 10) / 10} s"
                 addClass: 'nonblock'
 
-            @set "@shared.deps", yes
+            @set "@shared.deps", {+_all}, {+deep}
 
 catch
     loadingError (e.stack or e)

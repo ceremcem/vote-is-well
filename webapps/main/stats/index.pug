@@ -12,13 +12,12 @@ ui-progress.green(min="0" max="10000" value="{{twitter.total2.count}}")
 
 anchor upload-graph
 h4.ui.header.top.attached.inverted Twitter'a Tutanak Yüklenme Adetleri #[a(href="#upload-graph"): icon.linkify]
-async
-    .ui.segment.bottom.attached(style="padding-top: 5em; background-color: rgb(54,54,54)")
-        time-series(
-            data="{{tweetsGraph(twitter.total2.tweets)}}"
-            y-format="#"
-            name="Toplam"
-            )             
+.ui.segment.bottom.attached(style="padding-top: 5em; background-color: rgb(54,54,54)")
+    time-series(
+        data="{{tweetsGraph(twitter.total2.tweets)}}"
+        y-format="#"
+        name="Toplam"
+        )             
 
 h4.ui.header.block.top.attached Mevcut Tutanaklar
 .ui.segment.bottom.attached        
