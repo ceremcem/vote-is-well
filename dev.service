@@ -8,5 +8,5 @@ launch-service $(calc-session-name "$0")
 run-in-tmux "cd servers/twitter-service" "echo ./run-ls main.ls"
 run-in-tmux "cd servers" "./run-ls webserver.ls"
 run-in-tmux "cd servers" "./run-ls users.ls"
-run-in-tmux "cd scada.js" "gulp --webapp main"
+run-in-tmux "cd scada.js" "./watch.sh main"
 run-in-tmux 'xdg-open .' 'atom .'
