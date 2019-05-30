@@ -103,9 +103,10 @@ export class TwitterExtended extends Twitter
                     query: query.q
                 if next
                     opts.next = that
-                err, res <~ @get (query.url or url), opts
+                err, res, full <~ @get (query.url or url), opts
                 if err
-                    console.log "error is: ", err 
+                    console.log "error is: ", err
+                    console.log "full: ", full
                     _err := err
                     return op!
                 _res ++= res.results

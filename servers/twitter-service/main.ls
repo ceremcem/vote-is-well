@@ -33,7 +33,10 @@ new DcsTcpClient port: dcs-port
 class TwitterDriver extends DriverAbstract
     ->
         super!
-        @started!
+        @connected = yes
+
+    init-handle: (handle, emit) ->
+        console.log "Initializing handle: ", handle
 
     write: (handle, value, respond) ->
         # we got a write request to the target

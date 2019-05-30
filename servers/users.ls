@@ -16,8 +16,10 @@ export hardcoded =
         routes: \@db-proxy.**
 
 if require.main is module
-    require! 'dcs': {Actor, DcsTcpClient, CouchDcsClient, sleep}
+    require! 'dcs': {Actor, DcsTcpClient, sleep}
     require! 'colors': {bg-yellow}
+    require! 'dcs/services/couch-dcs/client': {CouchDcsClient}
+
 
     new DcsTcpClient port: dcs-port
         .login do
